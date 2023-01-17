@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+
+<robot xmlns:xacro="https://wiki.ros.org/xacro" name="eight_cdpr_model">
+
+<!--
+    <xacro:property name="arm_height" value="1.75"/>
+    <xacro:property name="grip_height" value="0.5"/>
+-->
+	<xacro:property name="path" value="eight_cdpr/model/meshes"/>
+
+<!--
+	<xacro:arg name="params_path" default=""/>
+	<xacro:property name="params_path" value="$(arg params_path)"/>
+	<xacro:property name="mp" value="${load_yaml(params_path)}"/>
+	<xacro:property name="upper_limit" value="${map['upper_limit']}"/>
+-->
+
+    <link name="odom"/> 
+		<link name="base_link">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://${path}/base.dae"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<link name="base_link_01"/>
+
+		<link name="base_link_02"/>
+
+		<link name="endeffector">
+			<visual>
+				<origin xyz="0 0 0" rpy="0 0 0"/>
+				<geometry>
+					<mesh filename="package://${path}/endeffector.dae"/>
+				</geometry>
+			</visual>
+		</link>
+
+		<joint name="base_fixed" type="fixed">
+			<parent link="odom"/>
+			<child  link="base_link"/>
+		</joint>
+
+		<joint name="ee_continuous_x" type="continuous">
+			<parent link="base_link"/>
+			<child  link="base_link_01"/>
+			<axis   xyz="1 0 0"/>
+			<origin xyz="0 0 0"/>
+		</joint>
+
+		<joint name="ee_continuous_y" type="continuous">
+			<parent link="base_link_01"/>
+			<child  link="base_link_02"/>
+			<axis   xyz="0 1 0"/>
+			<origin xyz="0 0 0"/>
+		</joint>	
+
+		<joint name="ee_continuous_z" type="continuous">
+			<parent link="base_link_02"/>
+			<child  link="endeffector"/>
+			<axis   xyz="0 0 1"/>
+			<origin xyz="0 0 0"/>
+		</joint>
+
+</robot>
